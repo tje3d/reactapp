@@ -1,0 +1,15 @@
+html, body, #root {
+    min-width: 100%;
+    min-height: 100%;
+    width: 100%;
+    height: 100%;
+}
+
+html, body, #root {
+    background: whitesmoke;
+    font-size: 14px;
+}
+
+.m-b-0 {
+    margin-bottom: 0!important;
+}
