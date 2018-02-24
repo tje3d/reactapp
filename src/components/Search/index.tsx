@@ -2,13 +2,13 @@ import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { User, GithubUser, GithubSearchResponse } from 'interfaces';
 import { StateAuth } from 'interfaces';
-import * as actions from 'actions/auth';
+import * as actions from 'actions/search';
+import * as actionsAuth from 'actions/auth';
 
 import './style.css';
 
 var attention = require('img/attention.svg');
 
-import axios from 'axios';
 import UserList from './UserList';
 
 interface Props {
@@ -67,26 +67,22 @@ class Search extends React.Component<Props, States> {
             loading : true,
         });
 
-        axios({
-            method       : 'get',
-            url          : 'https://api.github.com/search/users?q=' + text,
-            responseType : 'json',
-            timeout      : 10000,
-        }).then(response => {
-            var data: GithubSearchResponse = response.data;
+        actions.search(text)
+            .then(response => {
+                var data: GithubSearchResponse = response.data;
 
-            this.setState({
-                users   : data.items,
-                total   : data.total_count,
-                loading : false,
-            });
-        }).catch(() => {
-            alert('connection failed');
+                this.setState({
+                    users   : data.items,
+                    total   : data.total_count,
+                    loading : false,
+                });
+            }).catch(() => {
+                alert('connection failed');
 
-            this.setState({
-                loading : false,
+                this.setState({
+                    loading : false,
+                });
             });
-        });
     }
 
     userField(field: string) {
@@ -146,7 +142,7 @@ export default connect((state: StateAuth)=>{
 }, (dispatch: Dispatch<Function>)=>{
     return {
         onLogout: ()=>{
-            actions.authLogout(dispatch);
+            actionsAuth.authLogout(dispatch);
         }
     };
 })(Search);

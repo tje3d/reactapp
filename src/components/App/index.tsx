@@ -31,4 +31,8 @@ export default connect((states: StateAuth)=>{
     return {
         user: states.user,
     };
-}, ()=>{})(App);
+}, ()=>{
+  return {
+
+  };
+})(App);
