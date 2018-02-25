@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
-import { StateAuth, AuthForm, AuthFormErrors } from 'interfaces';
+import { ApplicationState, AuthForm, AuthFormErrors } from 'interfaces';
 import * as actions from 'actions/auth';
 
 import './style.css';
@@ -142,7 +142,7 @@ class Login extends React.Component<Props, States> {
     }
 }
 
-let connected = connect((state: StateAuth) =>{
+let connected = connect((state: ApplicationState) =>{
     return {
         isLogin: false
     };

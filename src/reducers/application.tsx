@@ -2,10 +2,9 @@ import { createStore } from 'redux';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import * as constants from 'consts';
-import { StateAuth } from 'interfaces';
-import { AuthAction } from 'types';
+import { ApplicationState, ActionsTypes } from 'interfaces';
 
-export function Reducer(state: StateAuth, action: AuthAction): StateAuth {
+export function Reducer(state: ApplicationState, action: ActionsTypes): ApplicationState {
     switch (action.type) {
         case constants.AUTH_LOGIN:
             return { ...state, user: {
@@ -27,7 +26,7 @@ const persistConfig = {
 const persistedReducer = persistReducer(persistConfig, Reducer);
 
 export default () => {
-  let store = createStore<StateAuth>(persistedReducer, {
+  let store = createStore<ApplicationState>(persistedReducer, {
       user: false
   });
 

@@ -5,7 +5,7 @@ export interface User {
     token?: string;
 }
 
-export interface StateAuth {
+export interface ApplicationState {
     user: User | boolean
 };
 
@@ -40,3 +40,6 @@ export interface GithubUser {
     login: string;
     token: string;
 }
+
+// Types
+export type ActionsTypes = ActionLogin | ActionLogout;
