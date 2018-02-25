@@ -1,10 +1,17 @@
-import axios, { AxiosPromise } from 'axios';
+import * as constants from 'consts';
+import { ActionSearch, GithubUser, ActionSearchSetResult } from 'interfaces';
 
-export function search(text: string): AxiosPromise {
-    return axios({
-        method       : 'get',
-        url          : 'https://api.github.com/search/users?q=' + text,
-        responseType : 'json',
-        timeout      : 10000,
-    });
+export function search(text: string): ActionSearch {
+    return {
+        type: constants.SEARCH_SEARCH,
+        text
+    }
+}
+
+export function setresult(result: Array<GithubUser>, total: number): ActionSearchSetResult {
+    return {
+        type: constants.SEARCH_SETRESULT,
+        result,
+        total
+    }
 }

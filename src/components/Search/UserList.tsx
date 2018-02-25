@@ -1,13 +1,14 @@
 import * as React from 'react';
 
-import { GithubUser } from 'interfaces';
+import { connect, Dispatch } from 'react-redux';
+import { GithubUser, ApplicationState } from 'interfaces';
 
 interface Props {
     users: Array<GithubUser>;
     total: number;
 }
 
-export default class UserList extends React.Component<Props, any> {
+class UserList extends React.Component<Props, any> {
     render() {
         if (this.props.users.length === 0) {
             return null;
@@ -38,3 +39,12 @@ export default class UserList extends React.Component<Props, any> {
         return output;
     }
 }
+
+export default connect((state: ApplicationState)=>{
+    return {
+        users: state.search.list,
+        total: state.search.total,
+    };
+}, (dispatch: Dispatch<void>)=>{
+    return {};
+})(UserList);

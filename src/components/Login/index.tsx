@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
+import { Action } from 'redux';
 import { ApplicationState, AuthForm, AuthFormErrors } from 'interfaces';
 import * as actions from 'actions/auth';
 
@@ -45,11 +46,6 @@ class Login extends React.Component<Props, States> {
             .catch((errors: AuthFormErrors) => {
                 this.setState({
                     errors,
-                    loading: false
-                });
-            })
-            .then(()=>{
-                this.setState({
                     loading: false
                 });
             });
@@ -146,7 +142,7 @@ let connected = connect((state: ApplicationState) =>{
     return {
         isLogin: false
     };
-}, (dispatch: Dispatch<Function>)=>{
+}, (dispatch: Dispatch<Action>)=>{
     return {
         onLogin: (form: AuthForm) => {
             return actions.authLogin(dispatch, form);

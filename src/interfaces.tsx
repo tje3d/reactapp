@@ -6,8 +6,20 @@ export interface User {
 }
 
 export interface ApplicationState {
-    user: User | boolean
-};
+    auth: AuthState;
+    search: SearchState;
+}
+
+export interface AuthState {
+    isLogin: boolean;
+    user?: User;
+}
+
+export interface SearchState {
+    loading: boolean;
+    list: Array<GithubUser>;
+    total: number;
+}
 
 export interface AuthForm {
     username: string;
@@ -19,6 +31,8 @@ export interface AuthFormErrors {
     password?: string;
 }
 
+// Actions
+
 export interface ActionLogin {
     type: constants.AUTH_LOGIN;
     form: AuthForm
@@ -26,6 +40,17 @@ export interface ActionLogin {
 
 export interface ActionLogout {
     type: constants.AUTH_LOGOUT;
+}
+
+export interface ActionSearch {
+    type: constants.SEARCH_SEARCH;
+    text: string;
+}
+
+export interface ActionSearchSetResult {
+    type: constants.SEARCH_SETRESULT;
+    result: Array<GithubUser>;
+    total: number
 }
 
 export interface GithubSearchResponse {
@@ -42,4 +67,5 @@ export interface GithubUser {
 }
 
 // Types
-export type ActionsTypes = ActionLogin | ActionLogout;
+export type AuthActions = ActionLogin | ActionLogout;
+export type SearchActions = ActionSearch | ActionSearchSetResult;

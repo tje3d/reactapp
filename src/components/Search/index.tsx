@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
-import { User, GithubUser, GithubSearchResponse } from 'interfaces';
-import { ApplicationState } from 'interfaces';
+import { AuthState, GithubUser } from 'interfaces';
+import { ApplicationState, ActionSearch } from 'interfaces';
 import * as actions from 'actions/search';
 import * as actionsAuth from 'actions/auth';
 
@@ -12,28 +12,20 @@ var attention = require('img/attention.svg');
 import UserList from './UserList';
 
 interface Props {
-    user: User | boolean;
-    onLogout(): void;
-}
-
-interface States {
-    loading: boolean;
+    auth: AuthState;
     users: Array<GithubUser>;
     total: number;
+    loading: boolean;
+    onLogout(): void;
+    doSearch(text: string): void;
 }
 
-class Search extends React.Component<Props, States> {
+class Search extends React.Component<Props, {}> {
     searchInputTimeout: any = null;
     searchTimeout: number = 300;
 
     constructor(props: Props) {
         super(props);
-
-        this.state = {
-            loading: false,
-            users: [],
-            total: 0
-        };
 
         this.searchOnInput = this.searchOnInput.bind(this);
     }
@@ -52,11 +44,6 @@ class Search extends React.Component<Props, States> {
                     this.search(element.value);
                     return;
                 }
-
-                this.setState({
-                    users : [],
-                    total : 0,
-                });
             },
             this.searchTimeout
         );
@@ -67,35 +54,20 @@ class Search extends React.Component<Props, States> {
             loading : true,
         });
 
-        actions.search(text)
-            .then(response => {
-                var data: GithubSearchResponse = response.data;
-
-                this.setState({
-                    users   : data.items,
-                    total   : data.total_count,
-                    loading : false,
-                });
-            }).catch(() => {
-                alert('connection failed');
-
-                this.setState({
-                    loading : false,
-                });
-            });
+        this.props.doSearch(text);
     }
 
     userField(field: string) {
-        if (typeof(this.props.user) == 'boolean') {
+        if (!this.props.auth.isLogin || !this.props.auth.user) {
             return '';
         }
 
-        return this.props.user[field];
+        return this.props.auth.user[field];
     }
 
     render() {
         let EmptyUsers: JSX.Element | null = null;
-        if (this.state.users.length === 0) {
+        if (this.props.users.length === 0) {
             EmptyUsers = (
                 <div className="text-center">
                     <img src={attention} width="80" />
@@ -123,10 +95,10 @@ class Search extends React.Component<Props, States> {
                                     onChange={this.searchOnInput}
                                     autoFocus={true}
                                 />
-                                {this.state.loading ? (<i className="loading fa fa-refresh fa-spin" />) : null}
+                                {this.props.loading ? (<i className="loading fa fa-refresh fa-spin" />) : null}
                             </div>
                             {EmptyUsers}
-                            <UserList users={this.state.users} total={this.state.total} />
+                            <UserList />
                         </div>
                     </div>
                 </div>
@@ -137,12 +109,14 @@ class Search extends React.Component<Props, States> {
 
 export default connect((state: ApplicationState)=>{
     return {
-        user: state.user === false ? [] : state.user,
+        auth: state.auth,
+        users: state.search.list,
+        total: state.search.total,
+        loading: state.search.loading,
     };
-}, (dispatch: Dispatch<Function>)=>{
+}, (dispatch: Dispatch<void>)=>{
     return {
-        onLogout: ()=>{
-            actionsAuth.authLogout(dispatch);
-        }
+        onLogout: ()=>{ actionsAuth.authLogout(dispatch); },
+        doSearch: (text: string)=>{ dispatch<ActionSearch>(actions.search(text)); }
     };
 })(Search);
