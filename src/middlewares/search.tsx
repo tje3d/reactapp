@@ -10,6 +10,7 @@ import * as actions from 'actions/search';
 
 import {
     GithubSearchResponse,
+    GithubUserFull,
 } from 'interfaces';
 import * as constants from 'consts';
 
@@ -28,6 +29,22 @@ const searchMiddleware: Middleware = (store: MiddlewareAPI<void> ) => (next: Dis
             })
             .catch(() => {
                 store.dispatch(actions.setresult([], 0));
+                alert('connection failed');
+            });
+            break;
+        case constants.SEARCH_FETCHUSERINFO:
+            axios({
+                method       : 'get',
+                url          : 'https://api.github.com/users/' + action.username,
+                responseType : 'json',
+                timeout      : 10000,
+            })
+            .then(response => {
+                var data: GithubUserFull = response.data;
+                store.dispatch(actions.setFetchUserInformation(data));
+            })
+            .catch(() => {
+                // store.dispatch(actions.setresult([], 0));
                 alert('connection failed');
             });
             break;

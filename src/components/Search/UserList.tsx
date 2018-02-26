@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 
 import { connect, Dispatch } from 'react-redux';
 import { GithubUser, ApplicationState } from 'interfaces';
@@ -28,7 +29,7 @@ class UserList extends React.Component<Props, any> {
                     {this.props.users.map((user: any) => 
                         <li key={user.id} className="list-group-item">
                             <img src={user.avatar_url} className="img img-circle" width="24" height="24" />
-                            <a href={user.html_url} target="_blank" className="name">{user.login}</a>
+                            <Link to={'user/' + user.login} className="name">{user.login}</Link>
                             <span className="label label-default pull-right">Score: {user.score}</span>
                         </li>
                     )}

@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@types/react-redux": "^5.0.15",
+    "@types/react-router-dom": "^4.2.4",
     "autoprefixer": "7.1.6",
     "axios": "^0.18.0",
     "bootstrap3": "^3.3.5",
@@ -27,6 +28,7 @@
     "react-dev-utils": "4.2.1",
     "react-dom": "^16.2.0",
     "react-redux": "^5.0.7",
+    "react-router-dom": "^4.2.2",
     "redux": "^3.7.2",
     "redux-persist": "^5.9.1",
     "source-map-loader": "^0.2.1",

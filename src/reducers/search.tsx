@@ -5,6 +5,7 @@ let initialState = {
     loading: false,
     list: [],
     total: 0,
+    user: null
 };
 
 export default function Reducer(state: SearchState, action: SearchActions): SearchState {
@@ -21,9 +22,20 @@ export default function Reducer(state: SearchState, action: SearchActions): Sear
         case constants.SEARCH_SETRESULT:
             return {
                 ...state,
-                loading: false,
                 total: action.total,
-                list: action.result
+                list: action.result,
+                loading: false,
+            }
+        case constants.SEARCH_FETCHUSERINFO:
+            return {
+                ...state,
+                loading: true,
+            }
+        case constants.SEARCH_SETFETCHUSERINFO:
+            return {
+                ...state,
+                loading: false,
+                user: action.info,
             }
         default:
             return state;

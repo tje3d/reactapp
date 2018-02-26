@@ -3,12 +3,14 @@ import { connect, Dispatch } from 'react-redux';
 import { Action } from 'redux';
 import { ApplicationState, AuthForm, AuthFormErrors } from 'interfaces';
 import * as actions from 'actions/auth';
+import { History } from "history";
 
 import './style.css';
 
 export interface Props {
     isLogin: boolean;
     onLogin(form: AuthForm): Promise<Function>;
+    history: History
 }
 
 export interface States {
@@ -41,6 +43,8 @@ class Login extends React.Component<Props, States> {
             errors  : {},
             loading : true
         });
+
+        this.props.history.push('/search');
 
         this.props.onLogin(this.state.form)
             .catch((errors: AuthFormErrors) => {

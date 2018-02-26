@@ -19,6 +19,7 @@ export interface SearchState {
     loading: boolean;
     list: Array<GithubUser>;
     total: number;
+    user: GithubUserFull | null
 }
 
 export interface AuthForm {
@@ -53,6 +54,16 @@ export interface ActionSearchSetResult {
     total: number
 }
 
+export interface ActionSearchFetchUserInformation {
+    type: constants.SEARCH_FETCHUSERINFO;
+    username: string;
+}
+
+export interface ActionSearchSetFetchUserInformation {
+    type: constants.SEARCH_SETFETCHUSERINFO;
+    info: GithubUserFull | null;
+}
+
 export interface GithubSearchResponse {
     items: Array<any>;
     total_count: number;
@@ -66,6 +77,18 @@ export interface GithubUser {
     token: string;
 }
 
+export interface GithubUserFull {
+    login: string;
+    id: number;
+    avatar_url: string;
+    gravatar_id?: number;
+    url: string;
+    html_url: string;
+    name: string;
+    location: string;
+    bio: string;
+}
+
 // Types
 export type AuthActions = ActionLogin | ActionLogout;
-export type SearchActions = ActionSearch | ActionSearchSetResult;
+export type SearchActions = ActionSearch | ActionSearchSetResult | ActionSearchFetchUserInformation | ActionSearchSetFetchUserInformation;

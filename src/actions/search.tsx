@@ -1,5 +1,5 @@
 import * as constants from 'consts';
-import { ActionSearch, GithubUser, ActionSearchSetResult } from 'interfaces';
+import { ActionSearch, GithubUser, GithubUserFull, ActionSearchSetResult, ActionSearchFetchUserInformation, ActionSearchSetFetchUserInformation } from 'interfaces';
 
 export function search(text: string): ActionSearch {
     return {
@@ -13,5 +13,19 @@ export function setresult(result: Array<GithubUser>, total: number): ActionSearc
         type: constants.SEARCH_SETRESULT,
         result,
         total
+    }
+}
+
+export function fetchUserInformation(username: string): ActionSearchFetchUserInformation {
+    return {
+        type: constants.SEARCH_FETCHUSERINFO,
+        username
+    }
+}
+
+export function setFetchUserInformation(info: GithubUserFull | null): ActionSearchSetFetchUserInformation {
+    return {
+        type: constants.SEARCH_SETFETCHUSERINFO,
+        info
     }
 }

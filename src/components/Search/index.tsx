@@ -1,9 +1,11 @@
 import * as React from 'react';
+import { Action } from 'redux';
 import { connect, Dispatch } from 'react-redux';
 import { AuthState, GithubUser } from 'interfaces';
 import { ApplicationState, ActionSearch } from 'interfaces';
 import * as actions from 'actions/search';
 import * as actionsAuth from 'actions/auth';
+import { History } from "history";
 
 import './style.css';
 
@@ -16,11 +18,22 @@ interface Props {
     users: Array<GithubUser>;
     total: number;
     loading: boolean;
+    history: History;
     onLogout(): void;
+    doLogout(): void;
     doSearch(text: string): void;
+    clearResult(): void;
 }
 
-class Search extends React.Component<Props, {}> {
+interface States {
+    result: Array<{}>;
+    count: number;
+    perPage: number;
+    page: number;
+    
+}
+
+class Search extends React.Component<Props, States> {
     searchInputTimeout: any = null;
     searchTimeout: number = 300;
 
@@ -28,6 +41,14 @@ class Search extends React.Component<Props, {}> {
         super(props);
 
         this.searchOnInput = this.searchOnInput.bind(this);
+        this.doLogout = this.doLogout.bind(this);
+    }
+
+    componentWillMount() {
+        if (!this.props.auth.isLogin) {
+            this.props.history.replace("/");
+            return;
+        }
     }
 
     searchOnInput(e: React.ChangeEvent<HTMLInputElement>) {
@@ -39,20 +60,20 @@ class Search extends React.Component<Props, {}> {
         }
 
         this.searchInputTimeout = setTimeout(
-            () => {
-                if (element.value !== '') {
-                    this.search(element.value);
-                    return;
-                }
-            },
+            () => this.search(element.value),
             this.searchTimeout
         );
     }
 
     search(text: string) {
-        this.setState({
-            loading : true,
-        });
+        if (this.props.loading) {
+            return;
+        }
+
+        if (text == '') {
+            this.props.clearResult();
+            return;
+        }
 
         this.props.doSearch(text);
     }
@@ -63,6 +84,12 @@ class Search extends React.Component<Props, {}> {
         }
 
         return this.props.auth.user[field];
+    }
+
+    doLogout(e: React.MouseEvent<HTMLElement>) {
+        e.preventDefault();
+        this.props.history.replace("/");
+        this.props.onLogout();
     }
 
     render() {
@@ -83,7 +110,7 @@ class Search extends React.Component<Props, {}> {
                             <h4>
                                 Welcome Back {this.userField('username')}!
                                 <small className="text-muted"> token: {this.userField('token')}</small>
-                                <a href="#" className="pull-right" onClick={this.props.onLogout}>
+                                <a href="#" className="pull-right" onClick={this.doLogout}>
                                     <i className="fa fa-power-off" />
                                 </a>
                             </h4>
@@ -114,9 +141,10 @@ export default connect((state: ApplicationState)=>{
         total: state.search.total,
         loading: state.search.loading,
     };
-}, (dispatch: Dispatch<void>)=>{
+}, (dispatch: Dispatch<Action>)=>{
     return {
-        onLogout: ()=>{ actionsAuth.authLogout(dispatch); },
-        doSearch: (text: string)=>{ dispatch<ActionSearch>(actions.search(text)); }
+        onLogout: ()=>{ dispatch(actionsAuth.authLogout()); },
+        doSearch: (text: string)=> { dispatch<ActionSearch>(actions.search(text)); },
+        clearResult: ()=> { dispatch(actions.setresult([], 0)); },
     };
 })(Search);
