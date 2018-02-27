@@ -16,6 +16,8 @@ export default function Reducer(state: interfaces.StateUsers, action: any): inte
     switch (action.type) {
         case constants.USERS_SEARCH_PENDING:
         case constants.USERS_SEARCH_REJECTED:
+        case constants.USERS_FETCH_PENDING:
+        case constants.USERS_FETCH_REJECTED:
             return {
                 ...state,
                 loading: false
@@ -33,12 +35,6 @@ export default function Reducer(state: interfaces.StateUsers, action: any): inte
                 total: 0,
                 list: [],
                 loading: false,
-            }
-        case constants.USERS_FETCH_PENDING:
-        case constants.USERS_FETCH_REJECTED:
-            return {
-                ...state,
-                loading: true,
             }
         case constants.USERS_FETCH_FULFILLED:
             return {
