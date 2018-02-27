@@ -6,7 +6,7 @@ import {
     MiddlewareAPI,
 } from 'redux';
 
-import * as actions from 'actions/search';
+import * as actions from 'actions/users';
 
 import {
     GithubSearchResponse,
@@ -14,9 +14,9 @@ import {
 } from 'interfaces';
 import * as constants from 'consts';
 
-const searchMiddleware: Middleware = (store: MiddlewareAPI<void> ) => (next: Dispatch <void>) => (action: any) => {
+const searchMiddleware: Middleware = (store: MiddlewareAPI<any>) => (next: Dispatch <void>) => (action: any) => {
     switch (action.type) {
-        case constants.SEARCH_SEARCH:
+        case constants.USERS_SEARCH:
             axios({
                 method       : 'get',
                 url          : 'https://api.github.com/search/users?q=' + action.text,
@@ -25,14 +25,14 @@ const searchMiddleware: Middleware = (store: MiddlewareAPI<void> ) => (next: Dis
             })
             .then(response => {
                 var data: GithubSearchResponse = response.data;
-                store.dispatch(actions.setresult(data.items, data.total_count));
+                store.dispatch(actions.searchResult(data.items, data.total_count));
             })
             .catch(() => {
-                store.dispatch(actions.setresult([], 0));
+                store.dispatch(actions.searchResultClear());
                 alert('connection failed');
             });
             break;
-        case constants.SEARCH_FETCHUSERINFO:
+        case constants.USERS_FETCH:
             axios({
                 method       : 'get',
                 url          : 'https://api.github.com/users/' + action.username,
@@ -41,10 +41,10 @@ const searchMiddleware: Middleware = (store: MiddlewareAPI<void> ) => (next: Dis
             })
             .then(response => {
                 var data: GithubUserFull = response.data;
-                store.dispatch(actions.setFetchUserInformation(data));
+                store.dispatch(actions.fetchUserResult(data));
             })
             .catch(() => {
-                // store.dispatch(actions.setresult([], 0));
+                store.dispatch(actions.searchResultClear());
                 alert('connection failed');
             });
             break;

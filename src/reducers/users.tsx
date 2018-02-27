@@ -1,5 +1,5 @@
 import * as constants from 'consts';
-import { SearchActions, SearchState } from 'interfaces';
+import * as interfaces from 'interfaces';
 
 let initialState = {
     loading: false,
@@ -8,30 +8,37 @@ let initialState = {
     user: null
 };
 
-export default function Reducer(state: SearchState, action: SearchActions): SearchState {
+export default function Reducer(state: interfaces.StateUsers, action: interfaces.ActionUsers): interfaces.StateUsers {
     if (!state) {
         return initialState;
     }
 
     switch (action.type) {
-        case constants.SEARCH_SEARCH:
+        case constants.USERS_SEARCH:
             return {
                 ...state,
                 loading: true
             }
-        case constants.SEARCH_SETRESULT:
+        case constants.USERS_SEARCH_RESULT:
             return {
                 ...state,
                 total: action.total,
                 list: action.result,
                 loading: false,
             }
-        case constants.SEARCH_FETCHUSERINFO:
+        case constants.USERS_SEARCH_RESULT_CLEAR:
+            return {
+                ...state,
+                total: 0,
+                list: [],
+                loading: false,
+            }
+        case constants.USERS_FETCH:
             return {
                 ...state,
                 loading: true,
             }
-        case constants.SEARCH_SETFETCHUSERINFO:
+        case constants.USERS_FETCH_RESULT:
             return {
                 ...state,
                 loading: false,

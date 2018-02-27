@@ -2,8 +2,8 @@ import * as React from 'react';
 import { Action } from 'redux';
 import { connect, Dispatch } from 'react-redux';
 import { AuthState, GithubUser } from 'interfaces';
-import { ApplicationState, ActionSearch } from 'interfaces';
-import * as actions from 'actions/search';
+import { ApplicationState, ActionUsers } from 'interfaces';
+import * as actions from 'actions/users';
 import * as actionsAuth from 'actions/auth';
 import { History } from "history";
 
@@ -25,16 +25,17 @@ interface Props {
     clearResult(): void;
 }
 
-interface States {
-    result: Array<{}>;
-    count: number;
-    perPage: number;
-    page: number;
-    
-}
+// interface States {
+//     result: Array<{}>;
+//     count: number;
+//     perPage: number;
+//     page: number;
+//     actualPage: number;
+//     countNowWeNeed: number;
+// }
 
-class Search extends React.Component<Props, States> {
-    searchInputTimeout: any = null;
+class Search extends React.Component<Props, {}> {
+    searchInputTimeout: NodeJS.Timer | null = null;
     searchTimeout: number = 300;
 
     constructor(props: Props) {
@@ -42,13 +43,6 @@ class Search extends React.Component<Props, States> {
 
         this.searchOnInput = this.searchOnInput.bind(this);
         this.doLogout = this.doLogout.bind(this);
-    }
-
-    componentWillMount() {
-        if (!this.props.auth.isLogin) {
-            this.props.history.replace("/");
-            return;
-        }
     }
 
     searchOnInput(e: React.ChangeEvent<HTMLInputElement>) {
@@ -137,14 +131,14 @@ class Search extends React.Component<Props, States> {
 export default connect((state: ApplicationState)=>{
     return {
         auth: state.auth,
-        users: state.search.list,
-        total: state.search.total,
-        loading: state.search.loading,
+        users: state.users.list,
+        total: state.users.total,
+        loading: state.users.loading,
     };
 }, (dispatch: Dispatch<Action>)=>{
     return {
         onLogout: ()=>{ dispatch(actionsAuth.authLogout()); },
-        doSearch: (text: string)=> { dispatch<ActionSearch>(actions.search(text)); },
-        clearResult: ()=> { dispatch(actions.setresult([], 0)); },
+        doSearch: (text: string)=> { dispatch<ActionUsers>(actions.search(text)); },
+        clearResult: ()=> { dispatch(actions.searchResultClear()); },
     };
 })(Search);

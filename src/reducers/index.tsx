@@ -3,13 +3,13 @@ import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
 import auth from './auth';
-import search from './search';
+import users from './users';
 // import LoggerMiddleware from 'middlewares/logger';
-import SearchMiddleware from 'middlewares/search';
+import MiddlewareUsers from 'middlewares/users';
 
 let reducers = combineReducers({
     auth,
-    search
+    users
 })
 
 const persistConfig = {
@@ -29,7 +29,7 @@ export default () => {
         },
         applyMiddleware(
             // LoggerMiddleware,
-            SearchMiddleware
+            MiddlewareUsers
         )
     );
 

@@ -144,7 +144,7 @@ class Login extends React.Component<Props, States> {
 
 let connected = connect((state: ApplicationState) =>{
     return {
-        isLogin: false
+        isLogin: state.auth.isLogin
     };
 }, (dispatch: Dispatch<Action>)=>{
     return {

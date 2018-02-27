@@ -1,4 +1,5 @@
 import * as constants from 'consts';
+import { Action } from 'redux';
 
 export interface User {
     username: string;
@@ -7,7 +8,7 @@ export interface User {
 
 export interface ApplicationState {
     auth: AuthState;
-    search: SearchState;
+    users: StateUsers;
 }
 
 export interface AuthState {
@@ -15,7 +16,7 @@ export interface AuthState {
     user?: User;
 }
 
-export interface SearchState {
+export interface StateUsers {
     loading: boolean;
     list: Array<GithubUser>;
     total: number;
@@ -34,38 +35,42 @@ export interface AuthFormErrors {
 
 // Actions
 
-export interface ActionLogin {
+export interface ActionLogin extends Action {
     type: constants.AUTH_LOGIN;
     form: AuthForm
 }
 
-export interface ActionLogout {
+export interface ActionLogout extends Action {
     type: constants.AUTH_LOGOUT;
 }
 
-export interface ActionSearch {
-    type: constants.SEARCH_SEARCH;
+export interface ActionUsersSearch extends Action {
+    type: constants.USERS_SEARCH;
     text: string;
 }
 
-export interface ActionSearchSetResult {
-    type: constants.SEARCH_SETRESULT;
+export interface ActionUsersSearchResultClear extends Action {
+    type: constants.USERS_SEARCH_RESULT_CLEAR;
+}
+
+export interface ActionUsersSearchResult extends Action {
+    type: constants.USERS_SEARCH_RESULT;
     result: Array<GithubUser>;
     total: number
 }
 
-export interface ActionSearchFetchUserInformation {
-    type: constants.SEARCH_FETCHUSERINFO;
+export interface ActionUsersFetch extends Action {
+    type: constants.USERS_FETCH;
     username: string;
 }
 
-export interface ActionSearchSetFetchUserInformation {
-    type: constants.SEARCH_SETFETCHUSERINFO;
+export interface ActionUsersFetchResult extends Action {
+    type: constants.USERS_FETCH_RESULT;
     info: GithubUserFull | null;
 }
 
 export interface GithubSearchResponse {
-    items: Array<any>;
+    items: Array<GithubUser>;
     total_count: number;
 }
 
@@ -75,6 +80,7 @@ export interface GithubUser {
     html_url: string;
     login: string;
     token: string;
+    score: number;
 }
 
 export interface GithubUserFull {
@@ -91,4 +97,4 @@ export interface GithubUserFull {
 
 // Types
 export type AuthActions = ActionLogin | ActionLogout;
-export type SearchActions = ActionSearch | ActionSearchSetResult | ActionSearchFetchUserInformation | ActionSearchSetFetchUserInformation;
+export type ActionUsers = ActionUsersSearch | ActionUsersSearchResult | ActionUsersSearchResultClear | ActionUsersFetch | ActionUsersFetchResult;

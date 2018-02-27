@@ -6,7 +6,7 @@ import { History } from "history";
 import { match } from 'react-router';
 import { Link } from 'react-router-dom';
 
-import * as actions from 'actions/search';
+import * as actions from 'actions/users';
 
 import './style.css';
 
@@ -41,7 +41,11 @@ class User extends React.Component<Props, States> {
         }
 
         if (!this.props.info) {
-            return <div>User not found!</div>
+            return (
+                <div>
+                    User not found!
+                </div>
+            )
         }
 
         return (
@@ -68,12 +72,12 @@ class User extends React.Component<Props, States> {
 
 let connected = connect((state: ApplicationState) =>{
     return {
-        info: state.search.user ? state.search.user : {},
-        loading: state.search.loading,
+        info: state.users.user ? state.users.user : {},
+        loading: state.users.loading,
     };
 }, (dispatch: Dispatch<Action>)=>{
     return {
-        fetchUserInformations: (username: string) => { dispatch(actions.fetchUserInformation(username)) }
+        fetchUserInformations: (username: string) => { dispatch(actions.fetchUser(username)) }
     }
 });
 

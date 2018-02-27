@@ -6,7 +6,7 @@ import {
 
 const loggerMiddleware: Middleware = ({
     getState
-}: MiddlewareAPI < void > ) => (next: Dispatch < Function > ) => action => {
+}: MiddlewareAPI < void > ) => (next: Dispatch < Function > ) => (action: any) => {
     console.log('will dispatch', action);
 
     const returnValue = next(action);
