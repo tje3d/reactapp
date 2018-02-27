@@ -53,20 +53,9 @@ export interface ActionUsersSearchResultClear extends Action {
     type: constants.USERS_SEARCH_RESULT_CLEAR;
 }
 
-export interface ActionUsersSearchResult extends Action {
-    type: constants.USERS_SEARCH_RESULT;
-    result: Array<GithubUser>;
-    total: number
-}
-
 export interface ActionUsersFetch extends Action {
     type: constants.USERS_FETCH;
     username: string;
-}
-
-export interface ActionUsersFetchResult extends Action {
-    type: constants.USERS_FETCH_RESULT;
-    info: GithubUserFull | null;
 }
 
 export interface GithubSearchResponse {
@@ -97,4 +86,4 @@ export interface GithubUserFull {
 
 // Types
 export type AuthActions = ActionLogin | ActionLogout;
-export type ActionUsers = ActionUsersSearch | ActionUsersSearchResult | ActionUsersSearchResultClear | ActionUsersFetch | ActionUsersFetchResult;
+export type ActionUsers = ActionUsersSearch | ActionUsersSearchResultClear | ActionUsersFetch;

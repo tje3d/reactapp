@@ -8,22 +8,23 @@ let initialState = {
     user: null
 };
 
-export default function Reducer(state: interfaces.StateUsers, action: interfaces.ActionUsers): interfaces.StateUsers {
+export default function Reducer(state: interfaces.StateUsers, action: any): interfaces.StateUsers {
     if (!state) {
         return initialState;
     }
 
     switch (action.type) {
-        case constants.USERS_SEARCH:
+        case constants.USERS_SEARCH_PENDING:
+        case constants.USERS_SEARCH_REJECTED:
             return {
                 ...state,
-                loading: true
+                loading: false
             }
-        case constants.USERS_SEARCH_RESULT:
+        case constants.USERS_SEARCH_FULFILLED:
             return {
                 ...state,
-                total: action.total,
-                list: action.result,
+                total: action.payload.total,
+                list: action.payload.items,
                 loading: false,
             }
         case constants.USERS_SEARCH_RESULT_CLEAR:
@@ -33,16 +34,17 @@ export default function Reducer(state: interfaces.StateUsers, action: interfaces
                 list: [],
                 loading: false,
             }
-        case constants.USERS_FETCH:
+        case constants.USERS_FETCH_PENDING:
+        case constants.USERS_FETCH_REJECTED:
             return {
                 ...state,
                 loading: true,
             }
-        case constants.USERS_FETCH_RESULT:
+        case constants.USERS_FETCH_FULFILLED:
             return {
                 ...state,
                 loading: false,
-                user: action.info,
+                user: action.payload,
             }
         default:
             return state;

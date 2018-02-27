@@ -4,8 +4,9 @@ import storage from 'redux-persist/lib/storage';
 
 import auth from './auth';
 import users from './users';
-// import LoggerMiddleware from 'middlewares/logger';
-import MiddlewareUsers from 'middlewares/users';
+
+import promiseMiddleware from 'redux-promise-middleware';
+import thunkMiddleware from 'redux-thunk';
 
 let reducers = combineReducers({
     auth,
@@ -28,8 +29,8 @@ export default () => {
             }
         },
         applyMiddleware(
-            // LoggerMiddleware,
-            MiddlewareUsers
+            thunkMiddleware,
+            promiseMiddleware()
         )
     );
 

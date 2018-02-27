@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Action } from 'redux';
 import { connect, Dispatch } from 'react-redux';
 import { AuthState, GithubUser } from 'interfaces';
-import { ApplicationState, ActionUsers } from 'interfaces';
+import { ApplicationState } from 'interfaces';
 import * as actions from 'actions/users';
 import * as actionsAuth from 'actions/auth';
 import { History } from "history";
@@ -138,7 +138,7 @@ export default connect((state: ApplicationState)=>{
 }, (dispatch: Dispatch<Action>)=>{
     return {
         onLogout: ()=>{ dispatch(actionsAuth.authLogout()); },
-        doSearch: (text: string)=> { dispatch<ActionUsers>(actions.search(text)); },
+        doSearch: (text: string)=> { dispatch(actions.Search(text));  },
         clearResult: ()=> { dispatch(actions.searchResultClear()); },
     };
 })(Search);

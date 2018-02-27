@@ -1,32 +1,53 @@
 import * as constants from 'consts';
 import * as interfaces from 'interfaces';
-export function search(text: string): interfaces.ActionUsersSearch {
-    return {
-        type: constants.USERS_SEARCH,
-        text
-    }
-}
-export function searchResult(result: Array < interfaces.GithubUser > , total: number): interfaces.ActionUsersSearchResult {
-    return {
-        type: constants.USERS_SEARCH_RESULT,
-        result,
-        total
-    }
-}
+import axios from 'axios';
+
+export const Search = (text: string) => ({
+    type: constants.USERS_SEARCH,
+    payload: new Promise((resolve, reject)=>{
+        axios({
+            method       : 'get',
+            url          : 'https://api.github.com/search/users?q=' + text,
+            responseType : 'json',
+            timeout      : 10000,
+        })
+        .then(response => {
+            var data: interfaces.GithubSearchResponse = response.data;
+            resolve(data);
+        })
+        .catch(() => {
+            alert("Connection Failed");
+
+            reject({
+                items: [],
+                total_count: 0
+            });
+        });
+    })
+});
+
 export function searchResultClear(): interfaces.ActionUsersSearchResultClear {
     return {
         type: constants.USERS_SEARCH_RESULT_CLEAR
     }
 }
-export function fetchUser(username: string): interfaces.ActionUsersFetch {
-    return {
-        type: constants.USERS_FETCH,
-        username
-    }
-}
-export function fetchUserResult(info: interfaces.GithubUserFull | null): interfaces.ActionUsersFetchResult {
-    return {
-        type: constants.USERS_FETCH_RESULT,
-        info
-    }
-}
+
+export const fetchUser = (text: string) => ({
+    type: constants.USERS_FETCH,
+    payload: new Promise((resolve, reject)=>{
+        axios({
+            method       : 'get',
+            url          : 'https://api.github.com/users/' + text,
+            responseType : 'json',
+            timeout      : 10000,
+        })
+        .then(response => {
+            var data: interfaces.GithubUserFull = response.data;
+            resolve(data);
+        })
+        .catch(() => {
+            alert('connection failed');
+            reject();
+        });
+    })
+});
