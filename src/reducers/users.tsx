@@ -1,11 +1,11 @@
-import * as constants from 'consts';
+import * as constants  from 'consts';
 import * as interfaces from 'interfaces';
 
 let initialState = {
-    loading: false,
-    list: [],
-    total: 0,
-    user: null
+    loading : false,
+    list    : [],
+    total   : 0,
+    user    : null
 };
 
 export default function Reducer(state: interfaces.StateUsers, action: any): interfaces.StateUsers {

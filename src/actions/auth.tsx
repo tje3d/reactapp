@@ -1,7 +1,7 @@
-import { AuthForm, AuthFormErrors } from 'interfaces';
-import * as constants from 'consts';
-import { Dispatch } from 'react-redux';
-import { Action } from 'redux';
+import { AuthForm, AuthFormErrors }   from 'interfaces';
+import * as constants                 from 'consts';
+import { Dispatch }                   from 'react-redux';
+import { Action }                     from 'redux';
 
 export function authLogin(dispatch: Dispatch<Function>, form: AuthForm): Promise<Function> {
 

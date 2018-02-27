@@ -1,48 +1,41 @@
-import * as React from 'react';
-import { Action } from 'redux';
-import { connect, Dispatch } from 'react-redux';
-import { AuthState, GithubUser } from 'interfaces';
-import { ApplicationState } from 'interfaces';
-import * as actions from 'actions/users';
-import * as actionsAuth from 'actions/auth';
-import { History } from "history";
+import * as React                 from 'react';
+import { Action }                 from 'redux';
+import { connect, Dispatch }      from 'react-redux';
+import { AuthState, GithubUser }  from 'interfaces';
+import { ApplicationState }       from 'interfaces';
+import * as actions               from 'actions/users';
+import * as actionsAuth           from 'actions/auth';
+import { History }                from "history";
+import UserList                   from './UserList';
 
 import './style.css';
 
 var attention = require('img/attention.svg');
 
-import UserList from './UserList';
 
 interface Props {
-    auth: AuthState;
-    users: Array<GithubUser>;
-    total: number;
-    loading: boolean;
-    history: History;
-    onLogout(): void;
-    doLogout(): void;
-    doSearch(text: string): void;
-    clearResult(): void;
+    auth                    : AuthState;
+    users                   : Array<GithubUser>;
+    total                   : number;
+    loading                 : boolean;
+    history                 : History;
+    onLogout()              : void;
+    doLogout()              : void;
+    doSearch(text: string)  : void;
+    clearResult()           : void;
 }
 
-// interface States {
-//     result: Array<{}>;
-//     count: number;
-//     perPage: number;
-//     page: number;
-//     actualPage: number;
-//     countNowWeNeed: number;
-// }
+interface States {}
 
-class Search extends React.Component<Props, {}> {
-    searchInputTimeout: NodeJS.Timer | null = null;
-    searchTimeout: number = 300;
+class Search extends React.Component<Props, States> {
+    searchInputTimeout : NodeJS.Timer | null = null;
+    searchTimeout      : number              = 300;
 
     constructor(props: Props) {
         super(props);
 
         this.searchOnInput = this.searchOnInput.bind(this);
-        this.doLogout = this.doLogout.bind(this);
+        this.doLogout      = this.doLogout.bind(this);
     }
 
     searchOnInput(e: React.ChangeEvent<HTMLInputElement>) {
@@ -130,15 +123,15 @@ class Search extends React.Component<Props, {}> {
 
 export default connect((state: ApplicationState)=>{
     return {
-        auth: state.auth,
-        users: state.users.list,
-        total: state.users.total,
-        loading: state.users.loading,
+        auth    : state.auth,
+        users   : state.users.list,
+        total   : state.users.total,
+        loading : state.users.loading,
     };
 }, (dispatch: Dispatch<Action>)=>{
     return {
-        onLogout: ()=>{ dispatch(actionsAuth.authLogout()); },
-        doSearch: (text: string)=> { dispatch(actions.Search(text));  },
-        clearResult: ()=> { dispatch(actions.searchResultClear()); },
+        onLogout    : ()             =>{ dispatch(actionsAuth.authLogout()); },
+        doSearch    : (text: string) => { dispatch(actions.Search(text));  },
+        clearResult : ()             => { dispatch(actions.searchResultClear()); },
     };
 })(Search);

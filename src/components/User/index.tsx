@@ -1,21 +1,20 @@
-import * as React from 'react';
-import { connect, Dispatch } from 'react-redux';
-import { Action } from 'redux';
+import * as React                           from 'react';
+import { connect, Dispatch }                from 'react-redux';
+import { Action }                           from 'redux';
 import { ApplicationState, GithubUserFull } from 'interfaces';
-import { History } from "history";
-import { match } from 'react-router';
-import { Link } from 'react-router-dom';
-
-import * as actions from 'actions/users';
+import { History }                          from "history";
+import { match }                            from 'react-router';
+import { Link }                             from 'react-router-dom';
+import * as actions                         from 'actions/users';
 
 import './style.css';
 
 export interface Props {
-    history: History;
-    match: match<Params>;
-    fetchUserInformations(username: string): void;
-    info: GithubUserFull;
-    loading: boolean;
+    history                                 : History;
+    match                                   : match<Params>;
+    fetchUserInformations(username: string) : void;
+    info                                    : GithubUserFull;
+    loading                                 : boolean;
 }
 
 export interface Params {
@@ -72,8 +71,8 @@ class User extends React.Component<Props, States> {
 
 let connected = connect((state: ApplicationState) =>{
     return {
-        info: state.users.user ? state.users.user : {},
-        loading: state.users.loading,
+        info    : state.users.user ? state.users.user : {},
+        loading : state.users.loading,
     };
 }, (dispatch: Dispatch<Action>)=>{
     return {

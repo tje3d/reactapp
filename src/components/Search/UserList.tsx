@@ -1,12 +1,11 @@
-import * as React from 'react';
-import { Link } from 'react-router-dom';
-
-import { connect, Dispatch } from 'react-redux';
-import * as interfaces from 'interfaces';
+import * as React             from 'react';
+import { Link }               from 'react-router-dom';
+import { connect, Dispatch }  from 'react-redux';
+import * as interfaces        from 'interfaces';
 
 interface Props {
-    users: Array<interfaces.GithubUser>;
-    total: number;
+    users : Array<interfaces.GithubUser>;
+    total : number;
 }
 
 class UserList extends React.Component<Props, {}> {
@@ -43,8 +42,8 @@ class UserList extends React.Component<Props, {}> {
 
 export default connect((state: interfaces.ApplicationState)=>{
     return {
-        users: state.users.list,
-        total: state.users.total,
+        users : state.users.list,
+        total : state.users.total,
     };
 }, (dispatch: Dispatch<void>)=>{
     return {};

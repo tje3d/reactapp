@@ -1,10 +1,11 @@
-import * as constants from 'consts';
-import * as interfaces from 'interfaces';
-import axios from 'axios';
+import * as constants   from 'consts';
+import * as interfaces  from 'interfaces';
+import axios            from 'axios';
 
 export const Search = (text: string) => ({
-    type: constants.USERS_SEARCH,
-    payload: new Promise((resolve, reject)=>{
+    type    : constants.USERS_SEARCH,
+    payload : new Promise((resolve, reject)=>{
+
         axios({
             method       : 'get',
             url          : 'https://api.github.com/search/users?q=' + text,
@@ -23,6 +24,7 @@ export const Search = (text: string) => ({
                 total_count: 0
             });
         });
+
     })
 });
 
@@ -33,8 +35,9 @@ export function searchResultClear(): interfaces.ActionUsersSearchResultClear {
 }
 
 export const fetchUser = (text: string) => ({
-    type: constants.USERS_FETCH,
-    payload: new Promise((resolve, reject)=>{
+    type    : constants.USERS_FETCH,
+    payload : new Promise((resolve, reject)=>{
+        
         axios({
             method       : 'get',
             url          : 'https://api.github.com/users/' + text,
@@ -49,5 +52,6 @@ export const fetchUser = (text: string) => ({
             alert('connection failed');
             reject();
         });
+
     })
 });

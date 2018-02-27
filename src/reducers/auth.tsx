@@ -1,4 +1,4 @@
-import * as constants from 'consts';
+import * as constants             from 'consts';
 import { AuthActions, AuthState } from 'interfaces';
 
 let initialState = {

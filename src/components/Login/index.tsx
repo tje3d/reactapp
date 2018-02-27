@@ -1,22 +1,22 @@
-import * as React from 'react';
-import { connect, Dispatch } from 'react-redux';
-import { Action } from 'redux';
+import * as React                                     from 'react';
+import { connect, Dispatch }                          from 'react-redux';
+import { Action }                                     from 'redux';
 import { ApplicationState, AuthForm, AuthFormErrors } from 'interfaces';
-import * as actions from 'actions/auth';
-import { History } from "history";
+import * as actions                                   from 'actions/auth';
+import { History }                                    from "history";
 
 import './style.css';
 
 export interface Props {
-    isLogin: boolean;
-    onLogin(form: AuthForm): Promise<Function>;
-    history: History
+    isLogin                 : boolean;
+    onLogin(form: AuthForm) : Promise<Function>;
+    history                 : History
 }
 
 export interface States {
-    loading: boolean;
-    errors: AuthFormErrors;
-    form: AuthForm;
+    loading : boolean;
+    errors  : AuthFormErrors;
+    form    : AuthForm;
 }
 
 class Login extends React.Component<Props, States> {
@@ -32,7 +32,7 @@ class Login extends React.Component<Props, States> {
             },
         };
 
-        this.submit = this.submit.bind(this);
+        this.submit      = this.submit.bind(this);
         this.handleInput = this.handleInput.bind(this);
     }
 
