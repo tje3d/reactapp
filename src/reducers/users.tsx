@@ -16,6 +16,10 @@ export default function Reducer(state: interfaces.StateUsers, action: any): inte
     switch (action.type) {
         case constants.USERS_SEARCH_PENDING:
         case constants.USERS_SEARCH_REJECTED:
+            return {
+                ...state,
+                loading: true
+            }
         case constants.USERS_FETCH_PENDING:
         case constants.USERS_FETCH_REJECTED:
             return {
