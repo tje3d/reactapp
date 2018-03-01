@@ -7,11 +7,11 @@ import * as actions               from 'actions/users';
 import * as actionsAuth           from 'actions/auth';
 import { History }                from "history";
 import UserList                   from './UserList';
+import * as constants             from 'consts';
 
 import './style.css';
 
 var attention = require('img/attention.svg');
-
 
 interface Props {
     auth                    : AuthState;
@@ -130,8 +130,8 @@ export default connect((state: ApplicationState)=>{
     };
 }, (dispatch: Dispatch<Action>)=>{
     return {
-        onLogout    : ()             =>{ dispatch(actionsAuth.authLogout()); },
-        doSearch    : (text: string) => { dispatch(actions.Search(text));  },
+        onLogout    : ()             => { dispatch(actionsAuth.authLogout()); },
+        doSearch    : (text: string) => { dispatch({type: constants.USERS_SEARCH, text});  },
         clearResult : ()             => { dispatch(actions.searchResultClear()); },
     };
 })(Search);

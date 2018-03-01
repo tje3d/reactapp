@@ -16,3 +16,4 @@ export const USERS_FETCH_REJECTED        = 'USERS_FETCH_REJECTED';
 export type USERS_SEARCH                 = typeof USERS_SEARCH;
 export type USERS_SEARCH_RESULT_CLEAR    = typeof USERS_SEARCH_RESULT_CLEAR;
 export type USERS_FETCH                  = typeof USERS_FETCH;
+export type USERS_SEARCH_FULFILLED       = typeof USERS_SEARCH_FULFILLED;

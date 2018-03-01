@@ -3,8 +3,12 @@ import { persistStore, persistReducer }                  from 'redux-persist';
 import storage                                           from 'redux-persist/lib/storage';
 import auth                                              from './auth';
 import users                                             from './users';
-import promiseMiddleware                                 from 'redux-promise-middleware';
-import thunkMiddleware                                   from 'redux-thunk';
+import { createEpicMiddleware, combineEpics }            from 'redux-observable';
+import * as EpicUsers                                    from 'epics/users';
+// import axios                                             from 'axios';
+// import * as interfaces                                   from 'interfaces';
+// import { ajax }                                          from 'rxjs/observable/dom/ajax';
+import 'rxjs';
 
 let reducers = combineReducers({
     auth,
@@ -27,8 +31,12 @@ export default () => {
             }
         },
         applyMiddleware(
-            thunkMiddleware,
-            promiseMiddleware()
+            createEpicMiddleware(
+                combineEpics(
+                    EpicUsers.Search,
+                    EpicUsers.Fetch
+                )
+            ),
         )
     );
 

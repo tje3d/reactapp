@@ -1,32 +1,30 @@
 import * as constants   from 'consts';
 import * as interfaces  from 'interfaces';
-import axios            from 'axios';
 
 export const Search = (text: string) => ({
-    type    : constants.USERS_SEARCH,
-    payload : new Promise((resolve, reject)=>{
-
-        axios({
-            method       : 'get',
-            url          : 'https://api.github.com/search/users?q=' + text,
-            responseType : 'json',
-            timeout      : 10000,
-        })
-        .then(response => {
-            var data: interfaces.GithubSearchResponse = response.data;
-            resolve(data);
-        })
-        .catch(() => {
-            alert("Connection Failed");
-
-            reject({
-                items: [],
-                total_count: 0
-            });
-        });
-
-    })
+    type : constants.USERS_SEARCH,
+    text
 });
+
+export const searchPending = () => ({
+    type : constants.USERS_SEARCH_PENDING,
+});
+
+export function searchResult({total, list}): any {
+    if (total == 0) {
+        return searchResultClear();
+    }
+
+    return searchSuccess({total, list});
+}
+
+export function searchSuccess({total, list}): any {
+    return {
+        type: constants.USERS_SEARCH_FULFILLED,
+        total: total,
+        list: list
+    }
+}
 
 export function searchResultClear(): interfaces.ActionUsersSearchResultClear {
     return {
@@ -34,24 +32,14 @@ export function searchResultClear(): interfaces.ActionUsersSearchResultClear {
     }
 }
 
-export const fetchUser = (text: string) => ({
-    type    : constants.USERS_FETCH,
-    payload : new Promise((resolve, reject)=>{
-        
-        axios({
-            method       : 'get',
-            url          : 'https://api.github.com/users/' + text,
-            responseType : 'json',
-            timeout      : 10000,
-        })
-        .then(response => {
-            var data: interfaces.GithubUserFull = response.data;
-            resolve(data);
-        })
-        .catch(() => {
-            alert('connection failed');
-            reject();
-        });
-
-    })
+export const fetchUser = (username: string) => ({
+    type : constants.USERS_FETCH,
+    username
 });
+
+export function fetchResult(user: interfaces.GithubUserFull): any {
+    return {
+        type: constants.USERS_FETCH_FULFILLED,
+        user
+    }
+}

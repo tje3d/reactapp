@@ -49,6 +49,12 @@ export interface ActionUsersSearch extends Action {
     text : string;
 }
 
+export interface ActionUsersSearchSuccess extends Action {
+    type  : constants.USERS_SEARCH_FULFILLED;
+    total : number;
+    list  : Array<void>;
+}
+
 export interface ActionUsersSearchResultClear extends Action {
     type : constants.USERS_SEARCH_RESULT_CLEAR;
 }

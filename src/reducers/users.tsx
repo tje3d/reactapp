@@ -1,5 +1,5 @@
-import * as constants  from 'consts';
-import * as interfaces from 'interfaces';
+import * as constants   from 'consts';
+import * as interfaces  from 'interfaces';
 
 let initialState = {
     loading : false,
@@ -12,15 +12,17 @@ export default function Reducer(state: interfaces.StateUsers, action: any): inte
     if (!state) {
         return initialState;
     }
+    
+    console.log(action.type);
 
     switch (action.type) {
         case constants.USERS_SEARCH_PENDING:
-        case constants.USERS_SEARCH_REJECTED:
+        case constants.USERS_FETCH_PENDING:
             return {
                 ...state,
                 loading: true
             }
-        case constants.USERS_FETCH_PENDING:
+        case constants.USERS_SEARCH_REJECTED:
         case constants.USERS_FETCH_REJECTED:
             return {
                 ...state,
@@ -29,8 +31,8 @@ export default function Reducer(state: interfaces.StateUsers, action: any): inte
         case constants.USERS_SEARCH_FULFILLED:
             return {
                 ...state,
-                total: action.payload.total,
-                list: action.payload.items,
+                total: action.total,
+                list: action.list,
                 loading: false,
             }
         case constants.USERS_SEARCH_RESULT_CLEAR:
@@ -44,7 +46,7 @@ export default function Reducer(state: interfaces.StateUsers, action: any): inte
             return {
                 ...state,
                 loading: false,
-                user: action.payload,
+                user: action.user,
             }
         default:
             return state;
