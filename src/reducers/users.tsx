@@ -1,18 +1,19 @@
-import * as constants   from 'consts';
-import * as interfaces  from 'interfaces';
+import * as constants from 'consts';
+import * as interfaces from 'interfaces';
 
 let initialState = {
-    loading : false,
-    list    : [],
-    total   : 0,
-    user    : null
+    loading: false,
+    list: [],
+    page: 0,
+    total: 0,
+    user: null
 };
 
 export default function Reducer(state: interfaces.StateUsers, action: any): interfaces.StateUsers {
     if (!state) {
         return initialState;
     }
-    
+
     console.log(action.type);
 
     switch (action.type) {
@@ -32,7 +33,8 @@ export default function Reducer(state: interfaces.StateUsers, action: any): inte
             return {
                 ...state,
                 total: action.total,
-                list: action.list,
+                list: state.list.concat(action.list),
+                page: action.page,
                 loading: false,
             }
         case constants.USERS_SEARCH_RESULT_CLEAR:
@@ -40,6 +42,7 @@ export default function Reducer(state: interfaces.StateUsers, action: any): inte
                 ...state,
                 total: 0,
                 list: [],
+                page: 0,
                 loading: false,
             }
         case constants.USERS_FETCH_FULFILLED:

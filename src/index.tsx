@@ -1,7 +1,7 @@
-import * as React      from 'react';
-import * as ReactDOM   from 'react-dom';
-import { Provider }    from 'react-redux';
-import storeContainer  from 'reducers';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import storeContainer from 'reducers';
 import { PersistGate } from 'redux-persist/integration/react';
 
 import 'bootstrap3/dist/css/bootstrap.min.css';
@@ -17,5 +17,5 @@ ReactDOM.render(
             <App />
         </PersistGate>
     </Provider>,
-  document.getElementById('root') as HTMLElement
+    document.getElementById('root') as HTMLElement
 );

@@ -1,22 +1,29 @@
-import * as React                                     from 'react';
-import { connect, Dispatch }                          from 'react-redux';
-import { Action }                                     from 'redux';
-import { ApplicationState, AuthForm, AuthFormErrors } from 'interfaces';
-import * as actions                                   from 'actions/auth';
-import { History }                                    from "history";
+import * as React from 'react';
+import {
+    connect,
+    Dispatch
+} from 'react-redux';
+import { Action } from 'redux';
+import {
+    ApplicationState,
+    AuthForm,
+    AuthFormErrors
+} from 'interfaces';
+import * as actions from 'actions/auth';
+import { History } from "history";
 
 import './style.css';
 
 export interface Props {
-    isLogin                 : boolean;
-    onLogin(form: AuthForm) : Promise<Function>;
-    history                 : History
+    isLogin: boolean;
+    onLogin(form: AuthForm): Promise<Function>;
+    history: History;
 }
 
 export interface States {
-    loading : boolean;
-    errors  : AuthFormErrors;
-    form    : AuthForm;
+    loading: boolean;
+    errors: AuthFormErrors;
+    form: AuthForm;
 }
 
 class Login extends React.Component<Props, States> {
@@ -24,15 +31,15 @@ class Login extends React.Component<Props, States> {
         super(props);
 
         this.state = {
-            loading : false,
-            errors  : {},
-            form    : {
+            loading: false,
+            errors: {},
+            form: {
                 username: '',
                 password: '',
             },
         };
 
-        this.submit      = this.submit.bind(this);
+        this.submit = this.submit.bind(this);
         this.handleInput = this.handleInput.bind(this);
     }
 
@@ -40,8 +47,8 @@ class Login extends React.Component<Props, States> {
         e.preventDefault();
 
         this.setState({
-            errors  : {},
-            loading : true
+            errors: {},
+            loading: true
         });
 
         this.props.history.push('/search');
@@ -56,9 +63,9 @@ class Login extends React.Component<Props, States> {
     }
 
     handleInput(event: React.ChangeEvent<HTMLInputElement>): void {
-        let target  = event.currentTarget;
-        let name    = target.getAttribute('name');
-        let val     = target.value;
+        let target = event.currentTarget;
+        let name = target.getAttribute('name');
+        let val = target.value;
 
         if (!name) {
             return;
@@ -72,7 +79,7 @@ class Login extends React.Component<Props, States> {
         });
     }
 
-    _renderErrorBlock(name: string): JSX.Element|null {
+    _renderErrorBlock(name: string): JSX.Element | null {
         if (!this.state.errors[name]) {
             return null;
         }
@@ -84,7 +91,7 @@ class Login extends React.Component<Props, States> {
         if (this.state.loading) {
             return (
                 <button type="button" className="btn btn-primary btn-block" disabled={this.state.loading}>
-                <i className="fa fa-refresh fa-spin" />
+                    <i className="fa fa-refresh fa-spin" />
                 </button>
             );
         }
@@ -102,7 +109,7 @@ class Login extends React.Component<Props, States> {
 
     render() {
         return (
-          <div className="login">
+            <div className="login">
                 <div className="login-container">
                     <div className="panel panel-default login-panel">
                         <div className="panel-heading text-center">
@@ -142,11 +149,11 @@ class Login extends React.Component<Props, States> {
     }
 }
 
-let connected = connect((state: ApplicationState) =>{
+let connected = connect((state: ApplicationState) => {
     return {
         isLogin: state.auth.isLogin
     };
-}, (dispatch: Dispatch<Action>)=>{
+}, (dispatch: Dispatch<Action>) => {
     return {
         onLogin: (form: AuthForm) => {
             return actions.authLogin(dispatch, form);

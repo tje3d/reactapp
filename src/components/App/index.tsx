@@ -1,20 +1,24 @@
-import * as React                                   from 'react';
-import { connect }                                  from 'react-redux';
-import { ApplicationState }                         from 'interfaces';
-import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { ApplicationState } from 'interfaces';
+import {
+    BrowserRouter as Router,
+    Route,
+    Redirect
+} from "react-router-dom";
 
 import './style.css';
 
-import Login      from 'components/Login';
-import Search     from 'components/Search';
-import User       from 'components/User';
-import GoToLogin  from 'components/GoToLogin';
+import Login from 'components/Login';
+import Search from 'components/Search';
+import User from 'components/User';
+import GoToLogin from 'components/GoToLogin';
 
 interface Props {
     isLogin: boolean;
 }
 
-interface States {}
+interface States { }
 
 class App extends React.Component<Props, States> {
     render() {
@@ -30,11 +34,11 @@ class App extends React.Component<Props, States> {
     }
 }
 
-export default connect((states: ApplicationState)=>{
+export default connect((states: ApplicationState) => {
     return {
         isLogin: states.auth.isLogin,
     };
-}, ()=>{
+}, () => {
     return {
 
     };

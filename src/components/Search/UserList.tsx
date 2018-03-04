@@ -1,11 +1,14 @@
-import * as React             from 'react';
-import { Link }               from 'react-router-dom';
-import { connect, Dispatch }  from 'react-redux';
-import * as interfaces        from 'interfaces';
+import * as React from 'react';
+import { Link } from 'react-router-dom';
+import {
+    connect,
+    Dispatch
+} from 'react-redux';
+import * as interfaces from 'interfaces';
 
 interface Props {
-    users : Array<interfaces.GithubUser>;
-    total : number;
+    users: Array<interfaces.GithubUser>;
+    total: number;
 }
 
 class UserList extends React.Component<Props, {}> {
@@ -18,14 +21,16 @@ class UserList extends React.Component<Props, {}> {
 
         output.push(
             <div className="form-group" key="1">
-                <span className="label label-default">Total result: {this.props.total}</span>
+                <span className="label label-success">Total result: {this.props.total}</span>
+                &nbsp;
+				<span className="label label-info">Users length: {this.props.users.length}</span>
             </div>
         );
 
         output.push(
             <div className="form-group" key="2">
                 <ul className="list-group">
-                    {this.props.users.map((user: interfaces.GithubUser) => 
+                    {this.props.users.map((user: interfaces.GithubUser) =>
                         <li key={user.id} className="list-group-item">
                             <img src={user.avatar_url} className="img img-circle" width="24" height="24" />
                             <Link to={'user/' + user.login} className="name">{user.login}</Link>
@@ -40,11 +45,11 @@ class UserList extends React.Component<Props, {}> {
     }
 }
 
-export default connect((state: interfaces.ApplicationState)=>{
+export default connect((state: interfaces.ApplicationState) => {
     return {
-        users : state.users.list,
-        total : state.users.total,
+        users: state.users.list,
+        total: state.users.total,
     };
-}, (dispatch: Dispatch<void>)=>{
+}, (dispatch: Dispatch<void>) => {
     return {};
 })(UserList);

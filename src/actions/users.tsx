@@ -1,28 +1,31 @@
-import * as constants   from 'consts';
-import * as interfaces  from 'interfaces';
+import * as constants from 'consts';
+import * as interfaces from 'interfaces';
 
-export const Search = (text: string) => ({
-    type : constants.USERS_SEARCH,
+export const Search = (text: string, page: number) => ({
+    type: constants.USERS_SEARCH,
+    page,
     text
 });
 
 export const searchPending = () => ({
-    type : constants.USERS_SEARCH_PENDING,
+    type: constants.USERS_SEARCH_PENDING,
 });
 
-export function searchResult({total, list}): any {
+export function searchResult({ total, list, text, page }): any {
     if (total == 0) {
         return searchResultClear();
     }
 
-    return searchSuccess({total, list});
+    return searchSuccess({ total, list, text, page });
 }
 
-export function searchSuccess({total, list}): any {
+export function searchSuccess({ total, list, text, page }): interfaces.ActionUsersSearchSuccess {
     return {
         type: constants.USERS_SEARCH_FULFILLED,
-        total: total,
-        list: list
+        total,
+        list,
+        page,
+        text
     }
 }
 
@@ -33,7 +36,7 @@ export function searchResultClear(): interfaces.ActionUsersSearchResultClear {
 }
 
 export const fetchUser = (username: string) => ({
-    type : constants.USERS_FETCH,
+    type: constants.USERS_FETCH,
     username
 });
 

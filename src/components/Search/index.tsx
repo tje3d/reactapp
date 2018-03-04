@@ -1,68 +1,81 @@
-import * as React                 from 'react';
-import { Action }                 from 'redux';
-import { connect, Dispatch }      from 'react-redux';
-import { AuthState, GithubUser }  from 'interfaces';
-import { ApplicationState }       from 'interfaces';
-import * as actions               from 'actions/users';
-import * as actionsAuth           from 'actions/auth';
-import { History }                from "history";
-import UserList                   from './UserList';
-import * as constants             from 'consts';
+import * as React from 'react';
+import { Action } from 'redux';
+import {
+    connect,
+    Dispatch,
+} from 'react-redux';
+import {
+    AuthState,
+    GithubUser
+} from 'interfaces';
+import { ApplicationState } from 'interfaces';
+import * as actions from 'actions/users';
+import * as actionsAuth from 'actions/auth';
+import { History } from "history";
+import UserList from './UserList';
+import { Observable } from 'rxjs';
+// import * as ReactDOM from 'react-dom';
 
 import './style.css';
 
 var attention = require('img/attention.svg');
 
 interface Props {
-    auth                    : AuthState;
-    users                   : Array<GithubUser>;
-    total                   : number;
-    loading                 : boolean;
-    history                 : History;
-    onLogout()              : void;
-    doLogout()              : void;
-    doSearch(text: string)  : void;
-    clearResult()           : void;
+    auth: AuthState;
+    users: Array<GithubUser>;
+    total: number;
+    loading: boolean;
+    history: History;
+    onLogout(): void;
+    doLogout(): void;
+    doSearch(text: string, page: number): void;
+    clearResult(): void;
+    searchOnInput: any;
+    page: number;
 }
 
-interface States {}
+interface States {
+    text: string;
+    paged: boolean;
+}
 
 class Search extends React.Component<Props, States> {
-    searchInputTimeout : NodeJS.Timer | null = null;
-    searchTimeout      : number              = 300;
+    searchInputTimeout: NodeJS.Timer | null = null;
+    searchTimeout: number = 300;
 
     constructor(props: Props) {
         super(props);
 
-        this.searchOnInput = this.searchOnInput.bind(this);
-        this.doLogout      = this.doLogout.bind(this);
+        this.state = {
+            text: "",
+            paged: this.props.total !== this.props.users.length
+        };
+
+        this.doLogout = this.doLogout.bind(this);
     }
 
-    searchOnInput(e: React.ChangeEvent<HTMLInputElement>) {
-        var element = e.currentTarget;
+    componentWillReceiveProps(props: Props) {
+        console.log(props);
 
-        if (this.searchInputTimeout !== null) {
-            clearTimeout(this.searchInputTimeout);
-            this.searchInputTimeout = null;
-        }
-
-        this.searchInputTimeout = setTimeout(
-            () => this.search(element.value),
-            this.searchTimeout
-        );
+        this.setState({
+            paged: props.total !== props.users.length,
+        });
     }
 
-    search(text: string) {
-        if (this.props.loading) {
-            return;
-        }
+    componentDidMount() {
+        // console.log(this.refs.input);
+        let input$ = Observable.fromEvent(this.refs.input as HTMLElement, 'input')
+            .map((input: any) => input.currentTarget.value)
+            .debounceTime(300)
+            .skipWhile((value: any) => {
+                return this.props.loading;
+            });
 
-        if (text == '') {
+        input$.subscribe((text: any) => {
+            this.setState({ text });
             this.props.clearResult();
-            return;
-        }
-
-        this.props.doSearch(text);
+            this.props.doSearch(text, 1);
+        });
     }
 
     userField(field: string) {
@@ -81,10 +94,22 @@ class Search extends React.Component<Props, States> {
 
     render() {
         let EmptyUsers: JSX.Element | null = null;
+        let Nextpage: JSX.Element | null = null;
+
         if (this.props.users.length === 0) {
             EmptyUsers = (
                 <div className="text-center">
                     <img src={attention} width="80" />
+                </div>
+            );
+        }
+
+        if (this.state.paged) {
+            Nextpage = (
+                <div className="form-group">
+                    <button className="btn btn-primary btn-block" onClick={() => this.props.doSearch(this.state.text, this.props.page + 2)}>
+                        Next Page
+                    </button>
                 </div>
             );
         }
@@ -101,18 +126,19 @@ class Search extends React.Component<Props, States> {
                                     <i className="fa fa-power-off" />
                                 </a>
                             </h4>
-                            <hr/>
+                            <hr />
                             <div className="form-group search-field-container">
                                 <input
                                     className="form-control"
                                     placeholder="Search..."
-                                    onChange={this.searchOnInput}
+                                    ref="input"
                                     autoFocus={true}
                                 />
                                 {this.props.loading ? (<i className="loading fa fa-refresh fa-spin" />) : null}
                             </div>
                             {EmptyUsers}
                             <UserList />
+                            {Nextpage}
                         </div>
                     </div>
                 </div>
@@ -121,17 +147,18 @@ class Search extends React.Component<Props, States> {
     }
 }
 
-export default connect((state: ApplicationState)=>{
+export default connect((state: ApplicationState) => {
     return {
-        auth    : state.auth,
-        users   : state.users.list,
-        total   : state.users.total,
-        loading : state.users.loading,
+        auth: state.auth,
+        users: state.users.list,
+        total: state.users.total,
+        loading: state.users.loading,
+        page: state.users.page,
     };
-}, (dispatch: Dispatch<Action>)=>{
+}, (dispatch: Dispatch<Action>) => {
     return {
-        onLogout    : ()             => { dispatch(actionsAuth.authLogout()); },
-        doSearch    : (text: string) => { dispatch({type: constants.USERS_SEARCH, text});  },
-        clearResult : ()             => { dispatch(actions.searchResultClear()); },
+        onLogout: () => { dispatch(actionsAuth.authLogout()); },
+        doSearch: (text: string, page: number) => { dispatch(actions.Search(text, page)); },
+        clearResult: () => { dispatch(actions.searchResultClear()); },
     };
 })(Search);
