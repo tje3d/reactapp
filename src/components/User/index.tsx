@@ -4,10 +4,11 @@ import { Action } from 'redux';
 import { ApplicationState, GithubUserFull } from 'interfaces';
 import { History } from "history";
 import { match } from 'react-router';
-import { Link } from 'react-router-dom';
 import * as actions from 'actions/users';
 
-import './style.css';
+import Loading from './loading';
+import Notfound from './notfound';
+import Panel from './panel';
 
 export interface Props {
     history: History;
@@ -17,57 +18,29 @@ export interface Props {
     loading: boolean;
 }
 
-export interface Params {
+interface Params {
     username: string;
 }
 
-export interface States { }
+class User extends React.Component<Props, {}> {
+    constructor(props: any) {
+        super(props);
 
-class User extends React.Component<Props, States> {
-    componentDidMount() {
-        this.props.fetchUserInformations(this.props.match.params.username);
+        props.fetchUserInformations(props.match.params.username);
     }
 
     render() {
         if (this.props.loading) {
-            return (
-                <div className="user">
-                    <div className="container text-center">
-                        <i className="fa fa-refresh fa-spin loading"></i>
-                    </div>
-                </div>
-            )
+            return <Loading />
         }
 
         if (!this.props.info) {
-            return (
-                <div>
-                    User not found!
-                </div>
-            )
+            return <Notfound />
         }
 
-        return (
-            <div className="user">
-                <div className="container text-center">
-                    <img src={this.props.info.avatar_url} className="image" />
-                    <hr />
-                    <div className="col-lg-6 col-lg-offset-3">
-                        <ul className="list-group text-left">
-                            <li className="list-group-item">ID: {this.props.info.id}</li>
-                            <li className="list-group-item">Name: {this.props.info.name}</li>
-                            <li className="list-group-item">Username: {this.props.info.login}</li>
-                            <li className="list-group-item">Avatar: {this.props.info.avatar_url}</li>
-                            <li className="list-group-item">Bio: {this.props.info.bio}</li>
-                        </ul>
-                        <hr />
-                        <Link to="/search" className="btn btn-primary"><i className="fa fa-arrow-left"></i> Back</Link>
-                    </div>
-                </div>
-            </div>
-        );
+        return <Panel info={this.props.info} />;
     }
-}
+};
 
 let connected = connect((state: ApplicationState) => {
     return {

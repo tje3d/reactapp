@@ -14,7 +14,6 @@ import * as actionsAuth from 'actions/auth';
 import { History } from "history";
 import UserList from './UserList';
 import { Observable } from 'rxjs';
-// import * as ReactDOM from 'react-dom';
 
 import './style.css';
 
