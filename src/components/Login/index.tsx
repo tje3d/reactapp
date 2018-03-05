@@ -1,32 +1,22 @@
 import * as React from 'react';
 import {
-    connect,
-    Dispatch
-} from 'react-redux';
-import { Action } from 'redux';
-import {
-    ApplicationState,
     AuthForm,
     AuthFormErrors
 } from 'interfaces';
-import * as actions from 'actions/auth';
-import { History } from "history";
 
 import './style.css';
 
-export interface Props {
-    isLogin: boolean;
+interface Props {
     onLogin(form: AuthForm): Promise<Function>;
-    history: History;
 }
 
-export interface States {
+interface States {
     loading: boolean;
     errors: AuthFormErrors;
     form: AuthForm;
 }
 
-class Login extends React.Component<Props, States> {
+export default class Login extends React.Component<Props, States> {
     constructor(props: Props) {
         super(props);
 
@@ -51,15 +41,23 @@ class Login extends React.Component<Props, States> {
             loading: true
         });
 
-        this.props.history.push('/search');
+        let form = this.state.form;
+        let errors: AuthFormErrors = {};
 
-        this.props.onLogin(this.state.form)
-            .catch((errors: AuthFormErrors) => {
-                this.setState({
-                    errors,
-                    loading: false
-                });
-            });
+        if (form.username == '') {
+            errors.username = 'Invalid username';
+        }
+
+        if (form.password == '' || form.password != '123') {
+            errors.password = 'Invalid password';
+        }
+
+        if (Object.keys(errors).length > 0) {
+            this.setState({errors, loading: false});
+            return;
+        }
+
+        this.props.onLogin(this.state.form);
     }
 
     handleInput(event: React.ChangeEvent<HTMLInputElement>): void {
@@ -148,17 +146,3 @@ class Login extends React.Component<Props, States> {
         );
     }
 }
-
-let connected = connect((state: ApplicationState) => {
-    return {
-        isLogin: state.auth.isLogin
-    };
-}, (dispatch: Dispatch<Action>) => {
-    return {
-        onLogin: (form: AuthForm) => {
-            return actions.authLogin(dispatch, form);
-        }
-    }
-});
-
-export default connected(Login);

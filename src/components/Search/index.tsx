@@ -134,7 +134,7 @@ class Search extends React.Component<Props, States> {
                                 {this.props.loading ? (<i className="loading fa fa-refresh fa-spin" />) : null}
                             </div>
                             {EmptyUsers}
-                            <UserList />
+                            <UserList users={this.props.users} total={this.props.total} />
                             {Nextpage}
                         </div>
                     </div>

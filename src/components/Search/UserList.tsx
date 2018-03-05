@@ -1,55 +1,29 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
-import {
-    connect,
-    Dispatch
-} from 'react-redux';
 import * as interfaces from 'interfaces';
+import User from './User';
 
 interface Props {
     users: Array<interfaces.GithubUser>;
     total: number;
 }
 
-class UserList extends React.Component<Props, {}> {
-    render() {
-        if (this.props.users.length === 0) {
-            return null;
-        }
+export default function UserList(props: Props) {
+    if (props.users.length === 0) {
+        return null;
+    }
 
-        let output: Array<JSX.Element> = [];
-
-        output.push(
+    return (
+        <div>
             <div className="form-group" key="1">
-                <span className="label label-success">Total result: {this.props.total}</span>
+                <span className="label label-success">Total result: {props.total}</span>
                 &nbsp;
-				<span className="label label-info">Users length: {this.props.users.length}</span>
+                <span className="label label-info">Users length: {props.users.length}</span>
             </div>
-        );
-
-        output.push(
             <div className="form-group" key="2">
                 <ul className="list-group">
-                    {this.props.users.map((user: interfaces.GithubUser) =>
-                        <li key={user.id} className="list-group-item">
-                            <img src={user.avatar_url} className="img img-circle" width="24" height="24" />
-                            <Link to={'user/' + user.login} className="name">{user.login}</Link>
-                            <span className="label label-default pull-right">Score: {user.score}</span>
-                        </li>
-                    )}
+                    {props.users.map((user: interfaces.GithubUser) => <User user={user} key={user.id} />)}
                 </ul>
             </div>
-        );
-
-        return output;
-    }
+        </div>
+    );
 }
-
-export default connect((state: interfaces.ApplicationState) => {
-    return {
-        users: state.users.list,
-        total: state.users.total,
-    };
-}, (dispatch: Dispatch<void>) => {
-    return {};
-})(UserList);

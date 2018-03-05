@@ -9,7 +9,7 @@ import {
 
 import './style.css';
 
-import Login from 'components/Login';
+import Auth from 'components/Auth';
 import Search from 'components/Search';
 import User from 'components/User';
 import GoToLogin from 'components/GoToLogin';
@@ -25,7 +25,7 @@ class App extends React.Component<Props, States> {
         return (
             <Router>
                 <div id="router">
-                    <Route exact path="/" component={!this.props.isLogin ? Login : () => <Redirect to="/search" />} />
+                    <Route exact path="/" component={!this.props.isLogin ? Auth : () => <Redirect to="/search" />} />
                     <Route path="/search" component={this.props.isLogin ? Search : GoToLogin} />
                     <Route path="/user/:username" component={this.props.isLogin ? User : GoToLogin} />
                 </div>
