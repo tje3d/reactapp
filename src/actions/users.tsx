@@ -7,10 +7,6 @@ export const Search = (text: string, page: number) => ({
     text
 });
 
-export const searchPending = () => ({
-    type: constants.USERS_SEARCH_PENDING,
-});
-
 export function searchResult({ total, list, text, page }): any {
     if (total == 0) {
         return searchResultClear();

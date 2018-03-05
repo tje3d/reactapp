@@ -40,8 +40,7 @@ interface States {
 }
 
 class Search extends React.Component<Props, States> {
-    searchInputTimeout: NodeJS.Timer | null = null;
-    searchTimeout: number = 300;
+    inputDebounce: number = 300;
 
     constructor(props: Props) {
         super(props);
@@ -55,18 +54,16 @@ class Search extends React.Component<Props, States> {
     }
 
     componentWillReceiveProps(props: Props) {
-        console.log(props);
-
         this.setState({
             paged: props.total !== props.users.length,
         });
     }
 
     componentDidMount() {
-        // console.log(this.refs.input);
         let input$ = Observable.fromEvent(this.refs.input as HTMLElement, 'input')
             .map((input: any) => input.currentTarget.value)
-            .debounceTime(300)
+            .debounceTime(this.inputDebounce)
+            .filter((value: any) => value != '')
             .skipWhile((value: any) => {
                 return this.props.loading;
             });

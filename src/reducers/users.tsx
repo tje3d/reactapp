@@ -17,8 +17,8 @@ export default function Reducer(state: interfaces.StateUsers, action: any): inte
     console.log(action.type);
 
     switch (action.type) {
-        case constants.USERS_SEARCH_PENDING:
-        case constants.USERS_FETCH_PENDING:
+        case constants.USERS_SEARCH:
+        case constants.USERS_FETCH:
             return {
                 ...state,
                 loading: true
