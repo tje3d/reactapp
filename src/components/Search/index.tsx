@@ -100,7 +100,9 @@ class Search extends React.Component<Props, States> {
             );
         }
 
-        if (this.state.paged) {
+        // Age relog beshe va data ha localstorage load beshe, text khalie
+        // va nabayad pagination dashte bashim
+        if (this.state.paged && this.state.text != '') {
             Nextpage = (
                 <div className="form-group">
                     <button className="btn btn-primary btn-block" onClick={() => this.props.doSearch(this.state.text, this.props.page + 2)}>
