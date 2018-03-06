@@ -2,7 +2,7 @@ import { Observable } from 'rxjs/Observable';
 import axios from 'axios';
 import * as interfaces from 'interfaces';
 
-export function search(text: string, page: number) {
+export function search({text, page}) {
     return new Observable(observer => {
         axios({
             method: 'get',
@@ -41,8 +41,10 @@ export function fetchUser(text: string) {
         }).then(response => {
             var data: interfaces.GithubUserFull = response.data;
             observer.next(data);
+            observer.complete();
         }).catch(() => {
             alert('connection failed');
+            observer.complete();
         });
     });
 }
