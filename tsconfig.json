@@ -1,4 +1,4 @@
-{
+    {
   "compilerOptions": {
     "outDir": "build/dist",
     "module": "esnext",
@@ -15,7 +15,7 @@
     "noImplicitAny": false,
     "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true,
-    "noUnusedLocals": true,
+    "noUnusedLocals": false,
     "baseUrl": "./src"
   },
   "exclude": [
