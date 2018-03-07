@@ -5,16 +5,16 @@ import * as api from 'services/users';
 import { Observable } from 'rxjs/Observable';
 import * as operators from 'rxjs/operators';
 
-export const Search = (action$: any) =>
+export const Search = (action$, state) =>
     action$.ofType(constants.USERS_SEARCH)
-        .switchMap(
+        .mergeMap(
             ({text, page}: interfaces.ActionUsersSearch) => {
-                return Observable.forkJoin(
-                    api.search({text, page: page}),
-                    api.search({text, page: page + 1}),
-                )
-                .switchMap((action: any) => Observable.from(action))
-                .filter(({list}) => list.length != 0)
+                let obs: any = [];
+                obs.push(api.search({text, page: page}));
+                obs.push(api.search({text, page: page + 1}));
+
+                return Observable.forkJoin(obs)
+                    .switchMap(action => Observable.from(action))
             }
         )
         .map(actions.searchResult)
