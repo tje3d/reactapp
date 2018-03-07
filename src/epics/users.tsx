@@ -9,13 +9,12 @@ export const Search = (action$: any) =>
     action$.ofType(constants.USERS_SEARCH)
         .switchMap(
             ({text, page}: interfaces.ActionUsersSearch) => {
-                return Observable.concat(
+                return Observable.forkJoin(
                     api.search({text, page: page}),
                     api.search({text, page: page + 1}),
-                    api.search({text, page: page + 2}),
                 )
+                .switchMap((action: any) => Observable.from(action))
                 .filter(({list}) => list.length != 0)
-                .merge()
             }
         )
         .map(actions.searchResult)

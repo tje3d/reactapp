@@ -8,7 +8,7 @@ export const Search = (text: string, page: number) => ({
 });
 
 export function searchResult(action: interfaces.ActionUsersSearchSuccess): interfaces.ActionUsersSearchResultClear | interfaces.ActionUsersSearchSuccess {
-    console.log(action);
+    console.log("SEARCH RESULT", action);
 
     if (action.total == 0) {
         return searchResultClear();
