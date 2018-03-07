@@ -7,12 +7,14 @@ export const Search = (text: string, page: number) => ({
     text
 });
 
-export function searchResult({ total, list, text, page }): any {
-    if (total == 0) {
+export function searchResult(action: interfaces.ActionUsersSearchSuccess): interfaces.ActionUsersSearchResultClear | interfaces.ActionUsersSearchSuccess {
+    console.log(action);
+
+    if (action.total == 0) {
         return searchResultClear();
     }
 
-    return searchSuccess({ total, list, text, page });
+    return searchSuccess(action);
 }
 
 export function searchSuccess({ total, list, text, page }): interfaces.ActionUsersSearchSuccess {

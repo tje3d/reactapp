@@ -2,7 +2,11 @@ import { Observable } from 'rxjs/Observable';
 import axios from 'axios';
 import * as interfaces from 'interfaces';
 
-export function search({text, page}) {
+export function search(input: any) {
+    console.log("API SEARCH: ", input);
+    
+    let text = input.text;
+    let page = input.page;
     return new Observable(observer => {
         axios({
             method: 'get',
@@ -11,6 +15,7 @@ export function search({text, page}) {
             timeout: 10000,
         }).then(response => {
             var data: interfaces.GithubSearchResponse = response.data;
+
             observer.next({
                 list: data.items,
                 total: data.total_count,

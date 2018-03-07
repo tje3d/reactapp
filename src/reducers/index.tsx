@@ -32,7 +32,6 @@ export default () => {
                 combineEpics(
                     EpicUsers.Search,
                     EpicUsers.Fetch,
-                    EpicUsers.Pagination,
                 )
             ),
         )
