@@ -12,7 +12,6 @@ export const Search = (action$: any) =>
                 return Observable.concat(
                     api.search({text, page: page}),
                     api.search({text, page: page + 1}),
-                    api.search({text, page: page + 2}),
                 ).merge()
             }
         )
