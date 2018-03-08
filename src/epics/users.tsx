@@ -7,18 +7,17 @@ import * as operators from 'rxjs/operators';
 
 export const Search = (action$, state) =>
     action$.ofType(constants.USERS_SEARCH)
-        .mergeMap(
-            ({text, page}: interfaces.ActionUsersSearch) => {
-                let obs: any = [];
-                obs.push(api.search({text, page: page}));
-                obs.push(api.search({text, page: page + 1}));
-
-                return Observable.forkJoin(obs)
-                    .switchMap(action => Observable.from(action))
-            }
+        .switchMap(
+            ({ text, page }) =>
+                Observable.forkJoin([
+                    api.search({ text, page: page }),
+                    api.search({ text, page: page + 1 })
+                ])
         )
+        .switchMap(action => Observable.from(action))
         .map(actions.searchResult)
 
 export const Fetch = (action$: any) =>
     action$.ofType(constants.USERS_FETCH)
-        .switchMap((action: any) => api.fetchUser(action.username).map(actions.fetchResult))
+        .switchMap((action: any) => api.fetchUser(action.username))
+        .map(actions.fetchResult)
