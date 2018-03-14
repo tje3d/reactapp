@@ -13,11 +13,6 @@ export const Search = (action$, state) =>
                     api.search({ text, page: page }),
                     api.search({ text, page: page + 1 })
                 ])
+                .switchMap(action => Observable.from(action))
+                .map(actions.searchResult)
         )
-        .switchMap(action => Observable.from(action))
-        .map(actions.searchResult)
-
-export const Fetch = (action$: any) =>
-    action$.ofType(constants.USERS_FETCH)
-        .switchMap((action: any) => api.fetchUser(action.username))
-        .map(actions.fetchResult)

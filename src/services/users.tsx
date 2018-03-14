@@ -35,21 +35,3 @@ export function search(input: any) {
         });
     });
 }
-
-export function fetchUser(text: string) {
-    return new Observable(observer => {
-        axios({
-            method: 'get',
-            url: 'https://api.github.com/users/' + text,
-            responseType: 'json',
-            timeout: 10000,
-        }).then(response => {
-            var data: interfaces.GithubUserFull = response.data;
-            observer.next(data);
-            observer.complete();
-        }).catch(() => {
-            alert('connection failed');
-            observer.complete();
-        });
-    });
-}

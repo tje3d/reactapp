@@ -9,6 +9,8 @@ export default function User(props: any) {
             <div className="container text-center">
                 <img src={props.info.avatar_url} className="image" />
                 <hr />
+                <Link to={"/user/" + props.info.login + "/repos"} className="btn btn-primary">Repositories</Link>
+                <hr />
                 <div className="col-lg-6 col-lg-offset-3">
                     <ul className="list-group text-left">
                         {Object.keys(props.info).map(key=>{

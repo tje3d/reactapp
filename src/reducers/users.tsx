@@ -6,7 +6,6 @@ let initialState = {
     list: [],
     page: 0,
     total: 0,
-    user: null
 };
 
 export default function Reducer(state: interfaces.StateUsers, action: any): interfaces.StateUsers {
@@ -14,17 +13,13 @@ export default function Reducer(state: interfaces.StateUsers, action: any): inte
         return initialState;
     }
 
-    console.log(action.type);
-
     switch (action.type) {
         case constants.USERS_SEARCH:
-        case constants.USERS_FETCH:
             return {
                 ...state,
-                loading: true
+                // loading: true
             }
         case constants.USERS_SEARCH_REJECTED:
-        case constants.USERS_FETCH_REJECTED:
             return {
                 ...state,
                 loading: false
@@ -44,12 +39,6 @@ export default function Reducer(state: interfaces.StateUsers, action: any): inte
                 list: [],
                 page: 0,
                 loading: false,
-            }
-        case constants.USERS_FETCH_FULFILLED:
-            return {
-                ...state,
-                loading: false,
-                user: action.user,
             }
         default:
             return state;

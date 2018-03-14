@@ -26,7 +26,9 @@ class User extends React.Component<Props, {}> {
     constructor(props: any) {
         super(props);
 
-        props.fetchUserInformations(props.match.params.username);
+        if (!props.info.login || props.info.login != props.match.params.username) {
+            props.fetchUserInformations(props.match.params.username);
+        }
     }
 
     render() {
@@ -44,8 +46,8 @@ class User extends React.Component<Props, {}> {
 
 let connected = connect((state: ApplicationState) => {
     return {
-        info: state.users.user ? state.users.user : {},
-        loading: state.users.loading,
+        info: state.user.user ? state.user.user : {},
+        loading: state.user.user ? false : state.user.loading,
     };
 }, (dispatch: Dispatch<Action>) => {
     return {

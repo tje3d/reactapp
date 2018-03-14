@@ -9,6 +9,7 @@ export interface User {
 export interface ApplicationState {
     auth: AuthState;
     users: StateUsers;
+    user: StateUser;
 }
 
 export interface AuthState {
@@ -21,7 +22,12 @@ export interface StateUsers {
     list: Array<GithubUser>;
     page: number;
     total: number;
-    user: GithubUserFull | null
+}
+
+export interface StateUser {
+    loading: boolean;
+    user: GithubUserFull | null;
+    repos: Array<{}>;
 }
 
 export interface AuthForm {
@@ -92,6 +98,11 @@ export interface GithubUserFull {
     name: string;
     location: string;
     bio: string;
+}
+
+export interface GithubRepository {
+    name: string;
+    html_url: string;
 }
 
 // Types

@@ -3,13 +3,16 @@ import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import auth from './auth';
 import users from './users';
+import user from './user';
 import { createEpicMiddleware, combineEpics } from 'redux-observable';
 import * as EpicUsers from 'epics/users';
+import * as EpicUser from 'epics/user';
 import 'rxjs';
 
 let reducers = combineReducers({
     auth,
-    users
+    users,
+    user
 })
 
 const persistConfig = {
@@ -31,7 +34,8 @@ export default () => {
             createEpicMiddleware(
                 combineEpics(
                     EpicUsers.Search,
-                    EpicUsers.Fetch,
+                    EpicUser.Fetch,
+                    EpicUser.FetchRepos,
                 )
             ),
         )
