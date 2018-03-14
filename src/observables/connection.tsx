@@ -54,8 +54,8 @@ function sendPingRequest() {
     });
 }
 
-// Socket ping
-let socketPing$ = RX.Observable.timer(0, 5000)
+// Ping Pong
+let pingPong$ = RX.Observable.timer(0, 5000)
     .mapTo('ping')
     .switchMap(
         value => {
@@ -65,6 +65,10 @@ let socketPing$ = RX.Observable.timer(0, 5000)
     )
     .switchMap(() => ws$)
     .catch(() => RX.Observable.of(false))
+    .startWith(false)
+    .pairwise()
+    .filter((input: any) => input[0] !== input[1])
+    .map((input: any) => input[1])
 
 // export default connectionStatusNotifier$
-export default socketPing$;
+export default pingPong$;
